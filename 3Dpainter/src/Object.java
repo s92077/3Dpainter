@@ -1,4 +1,3 @@
-import java.awt.Graphics;
 public class Object 
 {
 	protected Vector3D position;

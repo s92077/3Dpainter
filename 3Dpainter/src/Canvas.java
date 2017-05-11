@@ -5,6 +5,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 public class Canvas extends JPanel implements KeyListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8776665517040900893L;
 	private Vector3D viewPoint=new Vector3D(0,0,0);
 	private Vector3D visionVector=new Vector3D(1600,1600,0);
 	private Timer time;
@@ -51,7 +55,7 @@ public class Canvas extends JPanel implements KeyListener
 		line.draw(g,tf);
 		//LineTest
 		
-		Cube cube=new Cube(1,1,1,new Vector3D(10,10,0),new Vector3D(1,-1,0),new Vector3D(1,1,0));
+		Cube cube=new Cube(100,100,100,new Vector3D(300,300,0),new Vector3D(1,-1,0),new Vector3D(1,1,0));
 		cube.draw(g,tf);
 		Vector3D test[]=new Vector3D[8];
 		test[0]=new Vector3D(210,190,14);
