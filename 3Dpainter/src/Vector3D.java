@@ -13,7 +13,6 @@ public class Vector3D
 	{
 		point=new Point3D(a*u.getX(),a*u.getY(),a*u.getZ());
 	}
-	private Point3D getPoint(){return point;}
 	//return value
 	public double getX(){return point.getX();}
 	public double getY(){return point.getY();}
