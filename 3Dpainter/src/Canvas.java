@@ -80,10 +80,12 @@ public class Canvas extends JPanel implements KeyListener
 	public void paint(Graphics g)
 	{
 		super.paint(g);
+		Graphics2D graphics2D = (Graphics2D) g;
+		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		Transform tf=new Transform(viewPoint,visionVector,getWidth(),getHeight());
 
-		Surface surf=new Surface(Math.pow(800,0.5),Math.pow(800,0.5),new Vector3D(210,300,14),new Vector3D(1,-1,0),new Vector3D(-1,-1,0));
-		surf.draw(g,tf);
+		Rectangle rect=new Rectangle(Math.pow(800,0.5),Math.pow(800,0.5),new Vector3D(210,300,14),new Vector3D(1,-1,0),new Vector3D(-1,-1,0));
+		rect.draw(g,tf);
 
 		Line line=new Line(new Vector3D(210,100,0),new Vector3D(0,0,1),28);
 		line.draw(g,tf);

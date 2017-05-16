@@ -53,7 +53,6 @@ public class Transform
 		Vector3D X=get2DXNorm();
 		Vector3D Y=get2DYNorm().negate();
 		
-		double x1=(X.getX()),y1=(X.getY());
 		double x2=(Y.getX()),y2=(Y.getY());
 		
 		double dx=vect.getX()-getOrigin().getX();
@@ -66,7 +65,7 @@ public class Transform
 		dy-=y*y2;
 		//System.out.printf("dx=%f\n",dx);
 		x=Math.pow(dx*dx+dy*dy,0.5);
-		if(dx*X.getX()<0)
+		if(dx*X.getX()+dy*X.getY()<0)
 			x*=-1;
 		Vector3D trans=new Vector3D(x,y,0);
 		return trans;

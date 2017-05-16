@@ -1,9 +1,9 @@
 import java.awt.Graphics;
-public class Surface extends Object
+public class Rectangle extends Polygon
 {
 	private double length;
 	private double width;
-	public Surface(double length,double width,Vector3D position,Vector3D dirX,Vector3D dirY)
+	public Rectangle(double length,double width,Vector3D position,Vector3D dirX,Vector3D dirY)
 	{
 		super(position,dirX,dirY);
 		this.width=width;

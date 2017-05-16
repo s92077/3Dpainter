@@ -15,19 +15,19 @@ public class Cube extends Object
 	{
 		if(tf.getVisionVector().dot(position.add(tf.getviewPoint().negate()))>0)
 		{
-			Surface[] surface=new Surface[6];
-/*Z*/		surface[0]=new Surface(length,width,position.add(dirZ.normalize().scalarMultiply(height/2)),dirX,dirY);
-			surface[1]=new Surface(length,width,position.add(dirZ.normalize().scalarMultiply(height/(-2))),dirX,dirY.negate());
-			surface[0].draw(g,tf);
-			surface[1].draw(g,tf);
-/*X*/		surface[2]=new Surface(height,length,position.add(dirX.normalize().scalarMultiply(width/2)),dirY,dirZ);
-			surface[3]=new Surface(height,length,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirY,dirZ.negate());
-			surface[2].draw(g,tf);
-			surface[3].draw(g,tf);
-/*X*/		surface[4]=new Surface(height,width,position.add(dirY.normalize().scalarMultiply(length/2)),dirX,dirZ);
-			surface[5]=new Surface(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ.negate());
-			surface[4].draw(g,tf);
-			surface[5].draw(g,tf);
+			Rectangle[] Rectangle=new Rectangle[6];
+/*Z*/		Rectangle[0]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/2)),dirX,dirY);
+			Rectangle[1]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/(-2))),dirX,dirY.negate());
+			Rectangle[0].draw(g,tf);
+			Rectangle[1].draw(g,tf);
+/*X*/		Rectangle[2]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/2)),dirY,dirZ);
+			Rectangle[3]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirY,dirZ.negate());
+			Rectangle[2].draw(g,tf);
+			Rectangle[3].draw(g,tf);
+/*X*/		Rectangle[4]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/2)),dirX,dirZ);
+			Rectangle[5]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ.negate());
+			Rectangle[4].draw(g,tf);
+			Rectangle[5].draw(g,tf);
 		}
 	}
 }
