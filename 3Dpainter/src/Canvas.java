@@ -3,7 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
-public class Canvas extends JPanel implements KeyListener
+public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMotionListener
 {
 	/**
 	 * 
@@ -14,12 +14,16 @@ public class Canvas extends JPanel implements KeyListener
 	private Timer time;
 	private int sleepTime;
 	private int viewCommand=0;
+	private boolean viewDrag=false;
+	private int viewDragX0,viewDragY0,viewDragX1,viewDragY1;
 	public Canvas()
 	{
 		setVisible(true);
 		setSize(500,600); 
 		sleepTime = 50;
 		addKeyListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
 		setFocusable(true); 
 		start();
 	}	
@@ -163,13 +167,58 @@ public class Canvas extends JPanel implements KeyListener
 				break;
 		}
 	}
-	public static void main(String[] args)
-	{
-		Canvas p=new Canvas();
-		JFrame f=new JFrame();
-		f.add(p);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(500,600);
-		f.setVisible(true);
+	@Override
+	public void mouseDragged(MouseEvent event) {
+		
+		int dx,dy;
+		double theta,phi;
+		if(viewDrag)
+		{
+			System.out.println("ㄏㄏ");
+			viewDragX1 = event.getX();
+			viewDragY1 = event.getY();
+		
+			dx=viewDragX1-viewDragX0;
+			dy=viewDragY1-viewDragY0;
+			
+			theta=Math.atan(dy/visionVector.getNorm());
+			phi=Math.atan(dx/visionVector.getNorm());
+			System.out.printf("%d %d",dx,dy);
+			visionVector=visionVector.rotVect(10*phi,-10*theta);
+			visionVector.show();
+			viewDragX0=viewDragX1;
+			viewDragY0=viewDragY1;
+		}
+	}
+	@Override
+	public void mouseMoved(MouseEvent event) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mouseClicked(MouseEvent event) {
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent event) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent event) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent event) {
+		if(event.getButton()==MouseEvent.BUTTON3)
+			viewDrag=true;
+		viewDragX0 = event.getX();
+		viewDragY0 = event.getY();
+	}
+	@Override
+	public void mouseReleased(MouseEvent event) {
+		if(event.getButton()==MouseEvent.BUTTON3)
+			viewDrag=false;
 	}
 }

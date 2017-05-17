@@ -13,22 +13,30 @@ public class Polygon extends Object
 	}
 	public void draw(Transform tf,Graphics g)
 	{
-		int[] xPoints=new int[points.length],yPoints=new int[points.length];
+		int[] xPoints=new int[points.length+1],yPoints=new int[points.length+1];
 		for(int i=0;i<points.length;i++)
 		{
-			xPoints[i]=(int)points[i].getX();
-			yPoints[i]=(int)points[i].getY();
+			Vector3D point2D=tf.projection(points[i]);
+			point2D=tf.trans2D(point2D);
+			xPoints[i]=(int)point2D.getX();
+			yPoints[i]=(int)point2D.getY();
 		}
-		g.drawPolygon(xPoints, yPoints,points.length);
+		xPoints[xPoints.length]=xPoints[0];
+		yPoints[yPoints.length]=yPoints[0];
+		g.drawPolygon(xPoints, yPoints,points.length+1);
 	}
 	public void fill(Transform tf,Graphics g)
 	{
-		int[] xPoints=new int[points.length],yPoints=new int[points.length];
+		int[] xPoints=new int[points.length+1],yPoints=new int[points.length+1];
 		for(int i=0;i<points.length;i++)
 		{
-			xPoints[i]=(int)points[i].getX();
-			yPoints[i]=(int)points[i].getY();
+			Vector3D point2D=tf.projection(points[i]);
+			point2D=tf.trans2D(point2D);
+			xPoints[i]=(int)point2D.getX();
+			yPoints[i]=(int)point2D.getY();
 		}
-		g.fillPolygon(xPoints, yPoints,points.length);
+		xPoints[xPoints.length]=xPoints[0];
+		yPoints[yPoints.length]=yPoints[0];
+		g.fillPolygon(xPoints, yPoints,points.length+1);
 	}
 }

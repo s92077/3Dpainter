@@ -27,10 +27,10 @@ public class Rectangle extends Polygon
 	
 			for(int i=0;i<4;i++)
 			{
-				Vector3D test2D=tf.projection(vect[i]);
-				test2D=tf.trans2D(test2D);
-				x[i]=(int)test2D.getX();
-				y[i]=(int)test2D.getY();
+				Vector3D point2D=tf.projection(vect[i]);
+				point2D=tf.trans2D(point2D);
+				x[i]=(int)point2D.getX();
+				y[i]=(int)point2D.getY();
 			}
 			x[4]=x[0];y[4]=y[0];
 			g.fillPolygon(x,y,5);
@@ -54,10 +54,10 @@ public class Rectangle extends Polygon
 	
 			for(int i=0;i<4;i++)
 			{
-				Vector3D test2D=tf.projection(vect[i]);
-				test2D=tf.trans2D(test2D);
-				x[i]=(int)test2D.getX();
-				y[i]=(int)test2D.getY();
+				Vector3D point2D=tf.projection(vect[i]);
+				point2D=tf.trans2D(point2D);
+				x[i]=(int)point2D.getX();
+				y[i]=(int)point2D.getY();
 			}
 			x[4]=x[0];y[4]=y[0];
 			g.drawPolygon(x,y,5);
