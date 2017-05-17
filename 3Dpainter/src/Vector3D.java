@@ -90,17 +90,8 @@ public class Vector3D
 		phi=Math.toRadians(phi);
 		theta=Math.toRadians(theta);
 		double rxy=(vect[0])*(vect[0])+(vect[1])*(vect[1]);
-		double r=(vect[0])*(vect[0])+(vect[1])*(vect[1])+(vect[2])*(vect[2]);
-		double ot,op;
-		if(r==0.0){
-			if(vect[2]>=0)
-				ot=0;
-			else
-				ot=Math.PI;
-		}
-		else{
-			ot=Math.acos(vect[2]/(Math.sqrt(r)));
-		}
+		double op;
+
 		if(vect[2]*vect[2]>rxy*rxy*100000){
 			op=0;
 		}

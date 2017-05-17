@@ -174,7 +174,6 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		double theta,phi;
 		if(viewDrag)
 		{
-			System.out.println("£~£~");
 			viewDragX1 = event.getX();
 			viewDragY1 = event.getY();
 		
@@ -183,9 +182,9 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 			
 			theta=Math.atan(dy/visionVector.getNorm());
 			phi=Math.atan(dx/visionVector.getNorm());
-			System.out.printf("%d %d",dx,dy);
+
 			visionVector=visionVector.rotVect(10*phi,-10*theta);
-			visionVector.show();
+
 			viewDragX0=viewDragX1;
 			viewDragY0=viewDragY1;
 		}
