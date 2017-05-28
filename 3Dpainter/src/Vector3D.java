@@ -109,19 +109,30 @@ public class Vector3D
 			{0,									0,										Math.cos(theta)}
 		};
 		double result[] = {0,0,0};
-		/*for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++){
-			123
-				System.out.print(rotary[i][j]+"\t");
-			}
-			System.out.println();
-		}
-		System.out.println();*/
 		for(int i=0;i<3;i++){
 			for(int j=0;j<3;j++){
 				result[i]+=rotary[i][j]*vect[j];
 			}
 		}
 		return new Vector3D(result[0],result[1],result[2]-Math.sqrt(rxy)*Math.sin(theta));
+	}
+	public static boolean inside(int x,int y,int xPoints[],int yPoints[])
+	{
+		int t=0;
+		for(int i=0;i<xPoints.length-1;i++)
+		{
+			double slope;
+			if((xPoints[i]-xPoints[i+1])==0)
+				slope=Integer.MAX_VALUE;
+			else
+				slope=((double)(yPoints[i]-yPoints[i+1]))/(xPoints[i]-xPoints[i+1]);
+			double tmp=y-slope*x-yPoints[i]+slope*xPoints[i];
+			if(Math.min(xPoints[i],xPoints[i+1])<x&&x<Math.max(xPoints[i],xPoints[i+1])&&tmp>0)
+				t++;
+		}
+		if(t%2==0)
+			return false;
+		else
+			return true;
 	}
 }

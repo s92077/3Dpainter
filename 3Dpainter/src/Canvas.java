@@ -16,8 +16,13 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	private int viewCommand=0;
 	private boolean viewDrag=false;
 	private int viewDragX0,viewDragY0,viewDragX1,viewDragY1;
+	private ObjectManager objectManager;
+	Object object=new Line(new Vector3D(200,100,0),new Vector3D(200,100,10));
+	private Transform tf=new Transform(viewPoint, visionVector,getWidth(),getWidth());
 	public Canvas()
 	{
+		
+		objectManager=new ObjectManager(tf);
 		setVisible(true);
 		setSize(500,600); 
 		sleepTime = 50;
@@ -61,20 +66,22 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 								break;
 							case 7://turnup 
 								if(Math.abs((Math.pow(Math.pow(visionVector.rotVect(0,-1).getX(),2)+Math.pow(visionVector.rotVect(0,-1).getY(),2),0.5)/visionVector.rotVect(0,-1).getZ()))>0.01)
-									visionVector=visionVector.rotVect(0,-1);
+									visionVector=visionVector.rotVect(0,-0.2);
 								break;
 							case 8://turndown
 								if(Math.abs((Math.pow(Math.pow(visionVector.rotVect(0,1).getX(),2)+Math.pow(visionVector.rotVect(0,1).getY(),2),0.5)/visionVector.rotVect(0,1).getZ()))>0.01)
-									visionVector=visionVector.rotVect(0,1);
+									visionVector=visionVector.rotVect(0,0.2);
 								break;
 							case 9://turnleft 
-								visionVector=visionVector.rotVect(1,0);
+								visionVector=visionVector.rotVect(0.2,0);
 								break;
 							case 10://turnright
-								visionVector=visionVector.rotVect(-1,0);
+								visionVector=visionVector.rotVect(-0.2,0);
 								break;
 							}
 						   //----------------------------------------
+							tf=new Transform(viewPoint,visionVector,getWidth(),getHeight());
+							objectManager.updateTransform(tf);
 						    repaint();
 						}
 						
@@ -86,27 +93,12 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		super.paint(g);
 		Graphics2D graphics2D = (Graphics2D) g;
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		Transform tf=new Transform(viewPoint,visionVector,getWidth(),getHeight());
-
-		Rectangle rect=new Rectangle(Math.pow(800,0.5),Math.pow(800,0.5),new Vector3D(210,300,14),new Vector3D(1,-1,0),new Vector3D(-1,-1,0));
-		rect.draw(g,tf);
-
-		Line line=new Line(new Vector3D(210,100,0),new Vector3D(0,0,1),28);
-		line.draw(g,tf);
-		
-		Cube cube=new Cube(1,1,1,new Vector3D(10,10,0),new Vector3D(1,-1,0),new Vector3D(1,1,0));
-		cube.draw(g,tf);
+		objectManager.draw(g);
 	}
-	public void keyTyped(KeyEvent e) 
-	{
-		//System.out.println("keyTyped");
-	}
+	public void keyTyped(KeyEvent e) {}
     @Override
 	public void keyPressed(KeyEvent e)
 	{
-		//visionVector.show();
-		//t++;
-		//System.out.printf("%d",t);
 		int key = e.getKeyCode();
 		switch(key)
 		{
@@ -147,7 +139,6 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
     @Override
 	public void keyReleased(KeyEvent e) 
 	{
-		//System.out.println("keyReleased");
 		int key = e.getKeyCode();
 		switch(key)
 		{
@@ -183,7 +174,7 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 			theta=Math.atan(dy/visionVector.getNorm());
 			phi=Math.atan(dx/visionVector.getNorm());
 
-			visionVector=visionVector.rotVect(10*phi,-10*theta);
+			visionVector=visionVector.rotVect(20*phi,-20*theta);
 
 			viewDragX0=viewDragX1;
 			viewDragY0=viewDragY1;
@@ -192,7 +183,6 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	@Override
 	public void mouseMoved(MouseEvent event) {
 		// TODO 自動產生的方法 Stub
-		
 	}
 	@Override
 	public void mouseClicked(MouseEvent event) {
@@ -201,7 +191,6 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	@Override
 	public void mouseEntered(MouseEvent event) {
 		// TODO 自動產生的方法 Stub
-		
 	}
 	@Override
 	public void mouseExited(MouseEvent event) {
@@ -211,9 +200,16 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	@Override
 	public void mousePressed(MouseEvent event) {
 		if(event.getButton()==MouseEvent.BUTTON3)
+		{	
 			viewDrag=true;
-		viewDragX0 = event.getX();
-		viewDragY0 = event.getY();
+			viewDragX0 = event.getX();
+			viewDragY0 = event.getY();
+		}
+		if(event.getButton()==MouseEvent.BUTTON1)
+		{
+			//System.out.println(event.getX()+","+event.getY());
+			objectManager.select(event.getX(),event.getY());
+		}
 	}
 	@Override
 	public void mouseReleased(MouseEvent event) {
