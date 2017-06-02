@@ -1,6 +1,4 @@
-import java.awt.BasicStroke;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 public class Cube extends Object
 {
 	private double length;
@@ -21,19 +19,44 @@ public class Cube extends Object
 		{
 			for(int i=0;i<6;i++)
 				Rectangle[i].draw(g,tf);
-			if(selected)
-			{
-				Line lines[]=new Line[3];
-				lines[0]=new Line(Rectangle[0].getPosition(),Vector3D.add(Rectangle[0].getPosition(),this.getDirZ().normalize().scalarMultiply(height/2)));
-				lines[1]=new Line(Rectangle[3].getPosition(),Vector3D.add(Rectangle[3].getPosition(),this.getDirX().negate().normalize().scalarMultiply(width/2)));
-				lines[2]=new Line(Rectangle[5].getPosition(),Vector3D.add(Rectangle[5].getPosition(),this.getDirY().negate().normalize().scalarMultiply(length/2)));
-				((Graphics2D)g).setStroke(new BasicStroke(3));
-				for(int i=0;i<2;i++)
-					lines[i].draw(g,tf);
-			} 
 		}
 	}
-	public void widthPlus(){width++;}
+	public void modifySize(Vector3D vect,int selectedAxis)
+	{
+		switch (selectedAxis) {
+		
+		case 0:
+			width+=vect.dot(this.getDirX());
+			break;
+		case 1:
+			length+=vect.dot(this.getDirY());
+			break;
+		case 2:
+			height+=vect.dot(this.getDirZ());
+			break;
+		default:
+			break;
+		}
+		update();
+	}
+	public void modifyPosition(Vector3D vect,int selectedAxis)
+	{
+		switch (selectedAxis) {
+		
+		case 0:
+			position=position.add(this.getDirX().normalize().scalarMultiply(vect.dot(this.getDirX())));
+			break;
+		case 1:
+			position=position.add(this.getDirY().normalize().scalarMultiply(vect.dot(this.getDirY())));
+			break;
+		case 2:
+			position=position.add(this.getDirZ().normalize().scalarMultiply(vect.dot(this.getDirZ().normalize())));
+			break;
+		default:
+			break;
+		}
+		update();
+	}
 	public void update()
 	{ 
 /*Z*/	Rectangle[0]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/2)),dirX,dirY);
@@ -48,7 +71,6 @@ public class Cube extends Object
 		for(int i=0;i<6;i++)
 			if(Rectangle[i].inside(x, y, tf))
 			{
-				System.out.printf("%d",i);
 				return true;
 			}
 		return false;

@@ -37,4 +37,39 @@ public class Rectangle extends Polygon
 			super.fill(g, tf);
 		}
 	}
+	public void modifySize(Vector3D vect,int selectedAxis)
+	{
+		switch (selectedAxis) {
+		
+		case 0:
+			width+=vect.dot(this.getDirX());
+			break;
+		case 1:
+			length+=vect.dot(this.getDirY());
+			break;
+		case 2:
+			break;
+		default:
+			break;
+		}
+		update();
+	}
+	public void modifyPosition(Vector3D vect,int selectedAxis)
+	{
+		switch (selectedAxis) {
+		
+		case 0:
+			position=position.add(this.getDirX().normalize().scalarMultiply(vect.dot(this.getDirX())));
+			break;
+		case 1:
+			position=position.add(this.getDirY().normalize().scalarMultiply(vect.dot(this.getDirY())));
+			break;
+		case 2:
+			position=position.add(this.getDirZ().normalize().scalarMultiply(vect.dot(this.getDirZ())));
+			break;
+		default:
+			break;
+		}
+		update();
+	}
 }

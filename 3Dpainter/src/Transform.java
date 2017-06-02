@@ -13,20 +13,20 @@ public class Transform
 	}
 	public Vector3D getviewPoint(){return viewPoint;}
 	public Vector3D getVisionVector(){return visionVector;}
-	private  Vector3D get2DXNorm()
+	public  Vector3D get2DXNorm()
 	{
 		Vector3D vectX=new Vector3D(visionVector.getY(),(-1)*(visionVector.getX()),0);
 		return vectX.normalize();
 	}
-	private Vector3D get2DYNorm()
+	public Vector3D get2DYNorm()
 	{
-		Vector3D vectY=Vector3D.cross(get2DXNorm(),visionVector);
+		Vector3D vectY=Vector3D.cross(visionVector,get2DXNorm());
 		return vectY.normalize();
 	}
 	public Vector3D getOrigin()
 	{
 		Vector3D vectXY=get2DXNorm();
-		Vector3D vectZ=get2DYNorm();
+		Vector3D vectZ=get2DYNorm().negate();
 		
 		vectXY=vectXY.scalarMultiply(width/(-2));
 		vectZ=vectZ.scalarMultiply(height/(2));
@@ -51,7 +51,7 @@ public class Transform
 		double x;
 		double y;
 		Vector3D X=get2DXNorm();
-		Vector3D Y=get2DYNorm().negate();
+		Vector3D Y=get2DYNorm();
 		
 		double x2=(Y.getX()),y2=(Y.getY());
 		
@@ -69,5 +69,10 @@ public class Transform
 			x*=-1;
 		Vector3D trans=new Vector3D(x,y,0);
 		return trans;
+	}
+	public double getRatio(Vector3D position)
+	{
+		//System.out.printf("%f,%f%n",position.add(viewPoint.negate()).dot(visionVector),visionVector.getNorm());
+		return position.add(viewPoint.negate()).dot(visionVector)/visionVector.getNorm()/visionVector.getNorm();
 	}
 }

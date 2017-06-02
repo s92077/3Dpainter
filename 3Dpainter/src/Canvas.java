@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,14 +16,18 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	private int sleepTime;
 	private int viewCommand=0;
 	private boolean viewDrag=false;
+	private boolean modifying=false;
+	private int modifyingX0,modifyingY0,modifyingX1,modifyingY1;
 	private int viewDragX0,viewDragY0,viewDragX1,viewDragY1;
 	private ObjectManager objectManager;
-	Object object=new Line(new Vector3D(200,100,0),new Vector3D(200,100,10));
 	private Transform tf=new Transform(viewPoint, visionVector,getWidth(),getWidth());
 	public Canvas()
 	{
 		
 		objectManager=new ObjectManager(tf);
+		addObject(0);
+		addObject(1);
+		addObject(2);
 		setVisible(true);
 		setSize(500,600); 
 		sleepTime = 50;
@@ -30,6 +35,7 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setFocusable(true); 
+		this.requestFocusInWindow();
 		start();
 	}	
 	public void start()
@@ -82,6 +88,7 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 						   //----------------------------------------
 							tf=new Transform(viewPoint,visionVector,getWidth(),getHeight());
 							objectManager.updateTransform(tf);
+							setFocusable(true); 
 						    repaint();
 						}
 						
@@ -94,6 +101,24 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		Graphics2D graphics2D = (Graphics2D) g;
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		objectManager.draw(g);
+		objectManager.drawModifier(g);
+	}
+	public void setModifytype(int modifytype){objectManager.setModifytype(modifytype);}
+	public void addObject(int objectType)
+	{
+		switch (objectType) {
+		case 0:
+			objectManager.addLine(new Line(viewPoint.add(visionVector.scalarMultiply(0.1)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),100).normalize()), viewPoint.add(visionVector.scalarMultiply(0.1)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),0).normalize().negate())));
+			break;
+		case 1:
+			objectManager.addRectangle(new Rectangle(10,10, viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(0,0,1),new Vector3D(1,-1,0)));
+			break;
+		case 2:
+			objectManager.addCube(new Cube(30,30,30,viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(-1,1,0),new Vector3D(-1,-1,0)));
+			break;
+		default:
+			break;
+		}
 	}
 	public void keyTyped(KeyEvent e) {}
     @Override
@@ -179,6 +204,17 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 			viewDragX0=viewDragX1;
 			viewDragY0=viewDragY1;
 		}
+		if(modifying)
+		{
+			modifyingX1 = event.getX();
+			modifyingY1 = event.getY();
+		
+			dx=modifyingX1-modifyingX0;
+			dy=modifyingY1-modifyingY0;
+			objectManager.modifySelectedItemSize(dx, dy);
+			modifyingX0=modifyingX1;
+			modifyingY0=modifyingY1;
+		}
 	}
 	@Override
 	public void mouseMoved(MouseEvent event) {
@@ -207,13 +243,24 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		}
 		if(event.getButton()==MouseEvent.BUTTON1)
 		{
-			//System.out.println(event.getX()+","+event.getY());
-			objectManager.select(event.getX(),event.getY());
+			if(objectManager.insideModifier(event.getX(),event.getY()))
+			{
+				modifying=true;
+				modifyingX0 = event.getX();
+				modifyingY0 = event.getY();
+			}
+			else
+			{
+				objectManager.select(event.getX(),event.getY());
+			}
 		}
 	}
 	@Override
 	public void mouseReleased(MouseEvent event) {
 		if(event.getButton()==MouseEvent.BUTTON3)
 			viewDrag=false;
+		if(event.getButton()==MouseEvent.BUTTON1)
+			modifying=false;
 	}
+	
 }

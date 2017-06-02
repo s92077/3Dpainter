@@ -42,13 +42,13 @@ public class Polygon extends Object
 	}
 	public boolean inside(int x,int y,Transform tf)
 	{
-		int[] xPoints=new int[points.length+1],yPoints=new int[points.length+1];
+		double[] xPoints=new double[points.length+1],yPoints=new double[points.length+1];
 		for(int i=0;i<points.length;i++)
 		{
 			Vector3D point2D=tf.projection(points[i]);
 			point2D=tf.trans2D(point2D);
-			xPoints[i]=(int)point2D.getX();
-			yPoints[i]=(int)point2D.getY();
+			xPoints[i]=point2D.getX();
+			yPoints[i]=point2D.getY();
 		}
 		xPoints[points.length]=xPoints[0];
 		yPoints[points.length]=yPoints[0];

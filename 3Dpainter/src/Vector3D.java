@@ -116,7 +116,7 @@ public class Vector3D
 		}
 		return new Vector3D(result[0],result[1],result[2]-Math.sqrt(rxy)*Math.sin(theta));
 	}
-	public static boolean inside(int x,int y,int xPoints[],int yPoints[])
+	public static boolean inside(int x,int y,double xPoints[],double yPoints[])
 	{
 		int t=0;
 		for(int i=0;i<xPoints.length-1;i++)
