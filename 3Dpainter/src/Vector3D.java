@@ -135,4 +135,26 @@ public class Vector3D
 		else
 			return true;
 	}
+	public static Vector3D rotVect(Vector3D axis,Vector3D v,double theta){
+		double a=axis.getX(),b=axis.getY(),c=axis.getZ();
+		double vect[]={v.getX(),v.getY(),v.getZ()};
+		double L2d=a*a+b*b+c*c,L2=Math.sqrt(L2d);
+		
+		theta=Math.toRadians(theta);
+		double rotary[][]=
+		{
+					{L2d*Math.cos(theta)+(1-Math.cos(theta))*a*a, -Math.sin(theta)*c*L2+(1-Math.cos(theta))*a*b, Math.sin(theta)*b*L2+(1-Math.cos(theta))*a*c}, 
+					{Math.sin(theta)*c*L2+(1-Math.cos(theta))*a*b, L2d*Math.cos(theta)+(1-Math.cos(theta))*b*b, -Math.sin(theta)*a*L2+(1-Math.cos(theta))*b*c}, 
+					{-Math.sin(theta)*b*L2+(1-Math.cos(theta))*a*c, Math.sin(theta)*a*L2+(1-Math.cos(theta))*b*c, L2d*Math.cos(theta)+(1-Math.cos(theta))*c*c}
+		};
+		double result[] = {0,0,0};
+		for(int i=0;i<3;i++){
+			for(int j=0;j<3;j++){
+				result[i]+=rotary[i][j]*vect[j];
+			}
+			result[i]/=L2d;
+		}
+		return new Vector3D(result[0],result[1],result[2]);
+	}
+		
 }
