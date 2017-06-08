@@ -248,17 +248,20 @@ public class ObjectManager {
 		default:
 			break;
 		}
-		
+		ArrayList<Integer> selectedArr=new ArrayList<Integer>();
 		for(int i=0;i<lines.size();i++)
 		{
 			if(lines.get(i).inside(x, y, tf))
 			{
 				if(selectedType!=0||selectedNumber!=i)
 				{
-					lines.get(i).setSeleced();
-					selectedType=0;
-					selectedNumber=i;
-					return;
+					//lines.get(i).setSeleced();
+					//selectedType=0;
+					//selectedNumber=i;
+					selectedArr.add(0);
+					selectedArr.add(i);
+					System.out.printf("%d %d\n",0,i);
+					//return;
 				}
 			}
 		}
@@ -268,10 +271,13 @@ public class ObjectManager {
 			{	
 				if(selectedType!=1||selectedNumber!=i)
 				{
-					rectangles.get(i).setSeleced();
-					selectedType=1;
-					selectedNumber=i;
-					return;
+					//rectangles.get(i).setSeleced();
+					//selectedType=1;
+					//selectedNumber=i;
+					selectedArr.add(1);
+					selectedArr.add(i);
+					System.out.printf("%d %d\n",1,i);
+					//return;
 				}
 			}
 		}
@@ -281,15 +287,62 @@ public class ObjectManager {
 			{
 				if(selectedType!=2||selectedNumber!=i)
 				{
-					cubes.get(i).setSeleced();
-					selectedType=2;
-					selectedNumber=i;
+					//cubes.get(i).setSeleced();
+					//selectedType=2;
+					//selectedNumber=i;
+					selectedArr.add(2);
+					selectedArr.add(i);
+					System.out.printf("%d %d\n",2,i);
+					//return;
+				}
+			}
+		}
+		for(int i:selectedArr){
+			System.out.println(i);
+		}
+		if(selectedArr.size()>=4){
+			for(int i=0;i<selectedArr.size();i+=2){
+				if(selectedArr.get(i)==selectedType && selectedArr.get(i+1)>selectedNumber){
+					selectedType=selectedArr.get(i);
+					selectedNumber=selectedArr.get(i+1);
+					selectObject();
+					return;
+				}
+				else if(selectedArr.get(i)>selectedType){
+					selectedType=selectedArr.get(i);
+					selectedNumber=selectedArr.get(i+1);
+					selectObject();
 					return;
 				}
 			}
+			selectedType=selectedArr.get(0);
+			selectedNumber=selectedArr.get(1);
+			selectObject();
+			return;
+		}
+		else if(selectedArr.size()==2){
+			selectedType=selectedArr.get(0);
+			selectedNumber=selectedArr.get(1);
+			selectObject();
+			return;
 		}
 		selectedType=-1;
 		selectedNumber=-1;
 	}
 	public void setModifytype(int modifytype){this.modifytype=modifytype;}
+	public void selectObject(){
+		switch (selectedType) {
+		case 0:
+			lines.get(selectedNumber).setSeleced();
+			break;
+		case 1:
+			rectangles.get(selectedNumber).setSeleced();
+			break;
+		case 2:
+			cubes.get(selectedNumber).setSeleced();
+			break;
+		default:
+			break;
+		}
+	}
 }
