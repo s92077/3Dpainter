@@ -36,23 +36,23 @@ public class CommandPanel extends JPanel implements ActionListener{
 		for(int i=0;i<objectButtons.length;i++)
 			if(arg0.getSource()==objectButtons[i])
 				canvas.addObject(i);
-		
-		if(commandButtons[0].getText().equals("Size"))
-		{
-			canvas.setModifytype(1);
-			commandButtons[0].setText("Position");				
+		if(arg0.getSource()==commandButtons[0]){
+			if(commandButtons[0].getText().equals("Size"))
+			{
+				canvas.setModifytype(1);
+				commandButtons[0].setText("Position");				
+			}
+			else if(commandButtons[0].getText().equals("Position"))
+			{
+				canvas.setModifytype(2);
+				commandButtons[0].setText("Angle");
+			}
+			else if(commandButtons[0].getText().equals("Angle"))
+			{
+				canvas.setModifytype(0);
+				commandButtons[0].setText("Size");
+			}
 		}
-		else if(commandButtons[0].getText().equals("Position"))
-		{
-			canvas.setModifytype(2);
-			commandButtons[0].setText("Angle");
-		}
-		else if(commandButtons[0].getText().equals("Angle"))
-		{
-			canvas.setModifytype(0);
-			commandButtons[0].setText("Size");
-		}
-		
 		canvas.requestFocusInWindow();
 	}
 

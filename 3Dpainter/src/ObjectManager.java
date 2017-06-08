@@ -248,38 +248,48 @@ public class ObjectManager {
 		default:
 			break;
 		}
-		selectedType=-1;
-		selectedNumber=-1;
+		
 		for(int i=0;i<lines.size();i++)
 		{
 			if(lines.get(i).inside(x, y, tf))
 			{
-				lines.get(i).setSeleced();
-				selectedType=0;
-				selectedNumber=i;
-				return;
+				if(selectedType!=0||selectedNumber!=i)
+				{
+					lines.get(i).setSeleced();
+					selectedType=0;
+					selectedNumber=i;
+					return;
+				}
 			}
 		}
 		for(int i=0;i<rectangles.size();i++)
 		{
 			if(rectangles.get(i).inside(x, y, tf))
-			{
-				rectangles.get(i).setSeleced();
-				selectedType=1;
-				selectedNumber=i;
-				return;
+			{	
+				if(selectedType!=1||selectedNumber!=i)
+				{
+					rectangles.get(i).setSeleced();
+					selectedType=1;
+					selectedNumber=i;
+					return;
+				}
 			}
 		}
 		for(int i=0;i<cubes.size();i++)
 		{
 			if(cubes.get(i).inside(x, y, tf))
 			{
-				cubes.get(i).setSeleced();
-				selectedType=2;
-				selectedNumber=i;
-				return;
+				if(selectedType!=2||selectedNumber!=i)
+				{
+					cubes.get(i).setSeleced();
+					selectedType=2;
+					selectedNumber=i;
+					return;
+				}
 			}
 		}
+		selectedType=-1;
+		selectedNumber=-1;
 	}
 	public void setModifytype(int modifytype){this.modifytype=modifytype;}
 }

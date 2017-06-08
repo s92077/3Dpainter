@@ -111,7 +111,7 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 			objectManager.addLine(new Line(viewPoint.add(visionVector.scalarMultiply(0.1)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),100).normalize()), viewPoint.add(visionVector.scalarMultiply(0.1)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),0).normalize().negate())));
 			break;
 		case 1:
-			objectManager.addRectangle(new Rectangle(10,10, viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(0,0,1),new Vector3D(1,-1,0)));
+			objectManager.addRectangle(new Rectangle(10,10, viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(0,0,1),new Vector3D(-1,1,0)));
 			break;
 		case 2:
 			objectManager.addCube(new Cube(30,30,30,viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(-1,1,0),new Vector3D(-1,-1,0)));
