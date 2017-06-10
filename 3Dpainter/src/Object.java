@@ -4,7 +4,6 @@ public class Object
 	protected Vector3D dirX=new Vector3D(1,0,0);
 	protected Vector3D dirY=new Vector3D(0,1,0);
 	protected Vector3D dirZ=new Vector3D(0,0,1);
-	protected boolean selected=false;
 	public Object(){}
 	public Object(Vector3D position,Vector3D dirX,Vector3D dirY)
 	{
@@ -17,6 +16,4 @@ public class Object
 	public Vector3D getDirX(){return dirX;}
 	public Vector3D getDirY(){return dirY;}
 	public Vector3D getDirZ(){return dirZ; }
-	public void setSeleced(){selected=true;}
-	public void unSeleced(){selected=false;}
 }
