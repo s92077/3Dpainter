@@ -75,4 +75,8 @@ public class Transform
 		//System.out.printf("%f,%f%n",position.add(viewPoint.negate()).dot(visionVector),visionVector.getNorm());
 		return position.add(viewPoint.negate()).dot(visionVector)/visionVector.getNorm()/visionVector.getNorm();
 	}
+	public double distance(Vector3D position)
+	{
+		return position.add(viewPoint.negate()).getNorm();
+	}
 }

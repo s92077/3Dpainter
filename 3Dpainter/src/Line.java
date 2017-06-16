@@ -1,7 +1,10 @@
 import java.awt.Graphics;
+
+import java.awt.Color;
 public class Line extends Object
 {
 	private Vector3D startPoint,endPoint;
+	private Color color=Color.BLACK;
 	public Line(Vector3D startPoint,Vector3D endPoint)
 	{
 		super(startPoint.add(endPoint).scalarMultiply(0.5),endPoint.add(startPoint.negate()),new Vector3D(-1*endPoint.add(startPoint.negate()).getY(),endPoint.add(startPoint.negate()).getX(),0));
@@ -22,6 +25,7 @@ public class Line extends Object
 			vect2D=tf.trans2D(vect2D);
 			x2=(int)vect2D.getX();
 			y2=(int)vect2D.getY();
+			g.setColor(color);
 			g.drawLine(x1,y1,x2,y2);
 		}
 	}

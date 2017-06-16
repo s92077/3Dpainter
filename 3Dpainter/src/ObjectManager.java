@@ -28,9 +28,9 @@ public class ObjectManager {
 		for(int i=0;i<lines.size();i++)
 			lines.get(i).draw(g, tf);
 		for(int i=0;i<rectangles.size();i++)
-			rectangles.get(i).draw(g, tf);
+			rectangles.get(i).fill(g, tf);
 		for(int i=0;i<cubes.size();i++)
-			cubes.get(i).draw(g, tf);
+			cubes.get(i).fill(g, tf);
 	}
 	public boolean insideModifier(int x,int y)
 	{	int n=3;
@@ -181,7 +181,6 @@ public class ObjectManager {
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
-					
 					break;
 				default:
 					break;
@@ -298,4 +297,21 @@ public class ObjectManager {
 		selectedNumber=-1;
 	}
 	public void setModifytype(int modifytype){this.modifytype=modifytype;}
+	public Object getSelectedObject(){
+		Object selectedObject= null;
+		switch (selectedType) {
+		case 0:
+			selectedObject=lines.get(selectedNumber);
+			break;
+		case 1:
+			selectedObject=rectangles.get(selectedNumber);
+			break;
+		case 2:
+			selectedObject=cubes.get(selectedNumber);
+			break;
+		default:
+			break;
+		}
+		return selectedObject;
+	}
 }

@@ -1,12 +1,16 @@
 import java.awt.Graphics;
 
+import java.awt.Color;
+
 public class Polygon extends Object 
 {
 	private Vector3D points[];
+	private Color color;
 	public Polygon(){}
-	public Polygon(Vector3D position,Vector3D dirX,Vector3D dirY)//constructor for Rectangle
+	public Polygon(Vector3D position,Vector3D dirX,Vector3D dirY,Color color)//constructor for Rectangle
 	{
 		super(position,dirX,dirY);
+		this.color=color;
 	}
 	public void update(Vector3D points[])
 	{
@@ -24,6 +28,7 @@ public class Polygon extends Object
 		}
 		xPoints[points.length]=xPoints[0];
 		yPoints[points.length]=yPoints[0];
+		g.setColor(Color.BLACK);
 		g.drawPolygon(xPoints, yPoints,points.length+1);
 	}
 	public void fill(Graphics g,Transform tf)
@@ -38,7 +43,10 @@ public class Polygon extends Object
 		}
 		xPoints[points.length]=xPoints[0];
 		yPoints[points.length]=yPoints[0];
+		g.setColor(color);
 		g.fillPolygon(xPoints, yPoints,points.length+1);
+		g.setColor(Color.BLACK);
+		g.drawPolygon(xPoints, yPoints,points.length+1);
 	}
 	public boolean inside(int x,int y,Transform tf)
 	{

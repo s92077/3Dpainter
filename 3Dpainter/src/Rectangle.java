@@ -1,12 +1,13 @@
 import java.awt.Graphics;
+import java.awt.Color;
 public class Rectangle extends Polygon
 {
 	private double length;
 	private double width;
 	private Vector3D vect[]=new Vector3D[4];
-	public Rectangle(double length,double width,Vector3D position,Vector3D dirX,Vector3D dirY)
+	public Rectangle(double length,double width,Vector3D position,Vector3D dirX,Vector3D dirY,Color color)
 	{
-		super(position,dirX,dirY);
+		super(position,dirX,dirY,color);
 		this.width=width;
 		this.length=length;
 		update();
@@ -72,4 +73,6 @@ public class Rectangle extends Polygon
 		}
 		update();
 	}
+	public double getLength(){return length;}
+	public double getWidth(){return width;}
 }

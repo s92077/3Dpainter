@@ -1,22 +1,40 @@
 import java.awt.Graphics;
+
+import java.awt.Color;
 public class Cube extends Object
 {
 	private double length;
 	private double width;
 	private double height;
+	private Color color;
 	private Rectangle[] Rectangle=new Rectangle[6];
-	public Cube(double length,double width,double height,Vector3D position,Vector3D dirX,Vector3D dirY)
+	public Cube(double length,double width,double height,Vector3D position,Vector3D dirX,Vector3D dirY,Color color)
 	{
 		super(position,dirX,dirY);
 		this.length=length;
 		this.width=width;
 		this.height=height;
+		this.color=color;
 		this.update();
 	} 
+	public void fill(Graphics g,Transform tf)
+	{
+		if(tf.getVisionVector().dot(position.add(tf.getviewPoint().negate()))>0)
+		{
+			for(int i=0;i<3;i++)
+			{
+				if(Rectangle[2*i].getPosition().add(tf.getviewPoint().negate()).getNorm()<Rectangle[2*i+1].getPosition().add(tf.getviewPoint().negate()).getNorm())
+					Rectangle[2*i].fill(g,tf);
+				else
+					Rectangle[2*i+1].fill(g,tf);
+			}
+		}
+	}
 	public void draw(Graphics g,Transform tf)
 	{
 		if(tf.getVisionVector().dot(position.add(tf.getviewPoint().negate()))>0)
 		{
+			g.setColor(Color.BLACK);
 			for(int i=0;i<6;i++)
 				Rectangle[i].draw(g,tf);
 		}
@@ -59,12 +77,12 @@ public class Cube extends Object
 	}
 	public void update()
 	{ 
-/*Z*/	Rectangle[0]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/2)),dirX,dirY);
-		Rectangle[1]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/(-2))),dirX,dirY.negate());
-/*X*/	Rectangle[2]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/2)),dirY,dirZ);
-		Rectangle[3]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirY,dirZ.negate());
-/*Y*/	Rectangle[4]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/2)),dirX,dirZ);
-		Rectangle[5]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ.negate());
+/*Z*/	Rectangle[0]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/2)),dirX,dirY,color);
+		Rectangle[1]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/(-2))),dirX,dirY.negate(),color);
+/*X*/	Rectangle[2]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/2)),dirY,dirZ,color);
+		Rectangle[3]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirY,dirZ.negate(),color);
+/*Y*/	Rectangle[4]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/2)),dirX,dirZ,color);
+		Rectangle[5]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ.negate(),color);
 	}
 	public boolean inside(int x,int y,Transform tf)
 	{
@@ -75,4 +93,8 @@ public class Cube extends Object
 			}
 		return false;
 	}
+	public double getLength(){return length;}
+	public double getWidth(){return width;}
+	public double getHeight(){return height;}
+	
 }
