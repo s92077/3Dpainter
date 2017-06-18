@@ -75,4 +75,9 @@ public class Rectangle extends Polygon
 	}
 	public double getLength(){return length;}
 	public double getWidth(){return width;}
+	public void setLength(double length){this.length=length;update();}
+	public void setWidth(double width){this.width=width;update();}
+	public void setPositionX(double x){this.position=new Vector3D(x,position.getY(),position.getZ());update();}
+	public void setPositionY(double y){this.position=new Vector3D(position.getX(),y,position.getZ());update();}
+	public void setPositionZ(double z){this.position=new Vector3D(position.getX(),position.getY(),z);update();}
 }

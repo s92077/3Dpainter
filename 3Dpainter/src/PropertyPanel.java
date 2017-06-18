@@ -93,14 +93,50 @@ public class PropertyPanel extends JPanel implements KeyListener
 		System.out.println(x);
 		if (object instanceof Rectangle) {
 			Rectangle rectangle = (Rectangle) object;
-			sizeTextField[0].setText(Double.toString(rectangle.getWidth()));
-			sizeTextField[1].setText(Double.toString(rectangle.getLength()));
+			switch (x) {
+			case 0:
+				rectangle.setPositionX(Double.parseDouble(positionTextField[x].getText()));
+				break;
+			case 1:
+				rectangle.setPositionY(Double.parseDouble(positionTextField[x].getText()));
+				break;
+			case 2:
+				rectangle.setPositionZ(Double.parseDouble(positionTextField[x].getText()));
+				break;
+			case 3:
+				rectangle.setWidth(Double.parseDouble(sizeTextField[x-3].getText()));
+				break;
+			case 4:
+				rectangle.setLength(Double.parseDouble(sizeTextField[x-3].getText()));
+				break;
+			default:
+				break;
+			}
 		}
 		if (object instanceof Cube) {
 			Cube cube = (Cube) object;
-			sizeTextField[0].setText(Double.toString(cube.getWidth()));
-			sizeTextField[1].setText(Double.toString(cube.getLength()));
-			sizeTextField[2].setText(Double.toString(cube.getHeight()));
+			switch (x) {
+			case 0:
+				cube.setPositionX(Double.parseDouble(positionTextField[x].getText()));
+				break;
+			case 1:
+				cube.setPositionY(Double.parseDouble(positionTextField[x].getText()));
+				break;
+			case 2:
+				cube.setPositionZ(Double.parseDouble(positionTextField[x].getText()));
+				break;
+			case 3:
+				cube.setWidth(Double.parseDouble(sizeTextField[x-3].getText()));
+				break;
+			case 4:
+				cube.setLength(Double.parseDouble(sizeTextField[x-3].getText()));
+				break;
+			case 5:
+				cube.setHeight(Double.parseDouble(sizeTextField[x-3].getText()));
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	@Override
