@@ -77,24 +77,45 @@ public class Cube extends Object
 		update();
 	}
 	public void modifyAngle(Vector3D vect,int selectedAxis){
+		double tY=-vect.dot(this.getDirY());
+		double tZ=-vect.dot(this.getDirZ());
+		double tX=-vect.dot(this.getDirX());
+		double delta;
 		switch (selectedAxis) {
 		
 		case 0:
-			double tY=-vect.dot(this.getDirY());
-			dirY=Vector3D.rotVect(this.getDirX(),this.getDirY(),tY);
-			dirZ=Vector3D.rotVect(this.getDirX(),this.getDirZ(),tY);
+			if(Math.signum(tZ)>=0){
+				delta=-Math.sqrt(tY*tY+tZ*tZ);
+			}
+			else{
+				delta=Math.sqrt(tY*tY+tZ*tZ);
+			}
+			
+			dirY=Vector3D.rotVect(this.getDirX(),this.getDirY(),delta);
+			dirZ=Vector3D.rotVect(this.getDirX(),this.getDirZ(),delta);
 			//width+=vect.dot(this.getDirX());
 			break;
 		case 1:
-			double tZ=-vect.dot(this.getDirZ());
-			dirZ=Vector3D.rotVect(this.getDirY(),this.getDirZ(),tZ);
-			dirX=Vector3D.rotVect(this.getDirY(),this.getDirX(),tZ);
+			if(Math.signum(tX)>=0){
+				delta=-Math.sqrt(tX*tX+tZ*tZ);
+			}
+			else{
+				delta=Math.sqrt(tX*tX+tZ*tZ);
+			}
+			System.out.print("\\\\\\"+delta+"\\\\\\\n");
+			dirZ=Vector3D.rotVect(this.getDirY(),this.getDirZ(),delta);
+			dirX=Vector3D.rotVect(this.getDirY(),this.getDirX(),delta);
 			//length+=vect.dot(this.getDirY());
 			break;
 		case 2:
-			double tX=-vect.dot(this.getDirX());
-			dirX=Vector3D.rotVect(this.getDirZ(),this.getDirX(),tX);
-			dirY=Vector3D.rotVect(this.getDirZ(),this.getDirY(),tX);
+			if(Math.signum(tY)>=0){
+				delta=-Math.sqrt(tY*tY+tX*tX);
+			}
+			else{
+				delta=Math.sqrt(tY*tY+tX*tX);
+			}
+			dirX=Vector3D.rotVect(this.getDirZ(),this.getDirX(),delta);
+			dirY=Vector3D.rotVect(this.getDirZ(),this.getDirY(),delta);
 			//height+=vect.dot(this.getDirZ());
 			break;
 		default:
