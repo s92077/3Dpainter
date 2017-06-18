@@ -72,19 +72,19 @@ public class PropertyPanel extends JPanel implements KeyListener
 		this.object=object;
 		if(object!=null)
 		{
-			positionTextField[0].setText(Double.toString(object.getPosition().getX()));
-			positionTextField[1].setText(Double.toString(object.getPosition().getY()));
-			positionTextField[2].setText(Double.toString(object.getPosition().getZ()));
+			positionTextField[0].setText(Double.toString(object.getPosition().getX()).substring(0, Math.min(Double.toString(object.getPosition().getX()).length(),6)));
+			positionTextField[1].setText(Double.toString(object.getPosition().getY()).substring(0, Math.min(Double.toString(object.getPosition().getY()).length(),6)));
+			positionTextField[2].setText(Double.toString(object.getPosition().getZ()).substring(0, Math.min(Double.toString(object.getPosition().getZ()).length(),6)));
 			if (object instanceof Rectangle) {
 				Rectangle rectangle = (Rectangle) object;
-				sizeTextField[0].setText(Double.toString(rectangle.getWidth()));
-				sizeTextField[1].setText(Double.toString(rectangle.getLength()));
+				sizeTextField[0].setText(Double.toString(rectangle.getWidth()).substring(0, Math.min(Double.toString(rectangle.getWidth()).length(),6)));
+				sizeTextField[1].setText(Double.toString(rectangle.getLength()).substring(0, Math.min(Double.toString(rectangle.getLength()).length(),6)));
 			}
 			if (object instanceof Cube) {
 				Cube cube = (Cube) object;
-				sizeTextField[0].setText(Double.toString(cube.getWidth()));
-				sizeTextField[1].setText(Double.toString(cube.getLength()));
-				sizeTextField[2].setText(Double.toString(cube.getHeight()));
+				sizeTextField[0].setText(Double.toString(cube.getWidth()).substring(0, Math.min(Double.toString(cube.getWidth()).length(),6)));
+				sizeTextField[1].setText(Double.toString(cube.getLength()).substring(0, Math.min(Double.toString(cube.getLength()).length(),6)));
+				sizeTextField[2].setText(Double.toString(cube.getHeight()).substring(0, Math.min(Double.toString(cube.getHeight()).length(),6)));
 			}
 		}
 	}
