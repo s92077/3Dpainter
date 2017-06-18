@@ -21,10 +21,10 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	private int viewDragX0,viewDragY0,viewDragX1,viewDragY1;
 	private ObjectManager objectManager;
 	private Transform tf=new Transform(viewPoint, visionVector,getWidth(),getWidth());
-	public Canvas()
+	public Canvas(PropertyPanel propertyPanel)
 	{
 		
-		objectManager=new ObjectManager(tf);
+		objectManager=new ObjectManager(tf,propertyPanel);
 		addObject(0);
 		addObject(1);
 		addObject(2);
@@ -222,7 +222,6 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	}
 	@Override
 	public void mouseClicked(MouseEvent event) {
-		
 	}
 	@Override
 	public void mouseEntered(MouseEvent event) {
@@ -235,6 +234,8 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	}
 	@Override
 	public void mousePressed(MouseEvent event) {
+		setFocusable(true); 
+		this.requestFocusInWindow();
 		if(event.getButton()==MouseEvent.BUTTON3)
 		{	
 			viewDrag=true;
@@ -262,5 +263,4 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		if(event.getButton()==MouseEvent.BUTTON1)
 			modifying=false;
 	}
-	public Object getSelectedObject(){return objectManager.getSelectedObject();}
 }

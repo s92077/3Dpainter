@@ -12,8 +12,10 @@ public class ObjectManager {
 	private int modifytype=0;//size:0 position:1 angle:2
 	private Line modifierLines[]=new Line[3];
 	private int selectedAxis=-1;//0:x 1:y 2:z
-	public ObjectManager(Transform tf)
+	private PropertyPanel propertyPanel;
+	public ObjectManager(Transform tf,PropertyPanel propertyPanel)
 	{
+		this.propertyPanel=propertyPanel;
 		this.tf=tf;
 		lines=new ArrayList<Line>();
 		rectangles=new ArrayList<Rectangle>();
@@ -130,7 +132,12 @@ public class ObjectManager {
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
 					
+					for(int i=0;i<3;i++)
+						modifierLines[i].draw(g,tf);
 					break;
 				default:
 					break;
@@ -155,7 +162,13 @@ public class ObjectManager {
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
 					
+					((Graphics2D)g).setStroke(new BasicStroke(3));
+					for(int i=0;i<3;i++)
+						modifierLines[i].draw(g,tf);
 					break;
 				default:
 					break;
@@ -181,6 +194,13 @@ public class ObjectManager {
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					
+					((Graphics2D)g).setStroke(new BasicStroke(3));
+					for(int i=0;i<3;i++)
+						modifierLines[i].draw(g,tf);
 					break;
 				default:
 					break;
@@ -231,6 +251,28 @@ public class ObjectManager {
 			default:
 				break;
 			}
+		if(modifytype==2)
+			switch (selectedType) {
+			case 0:
+				position=lines.get(selectedNumber).getPosition();
+				vect=Vector3D.add(tf.get2DXNorm().scalarMultiply(dx*tf.getRatio(position)),tf.get2DYNorm().scalarMultiply(dy*tf.getRatio(position)));
+				lines.get(selectedNumber).modifyPosition(vect,selectedAxis);
+				break;
+			case 1:
+				position=rectangles.get(selectedNumber).getPosition();
+				vect=Vector3D.add(tf.get2DXNorm().scalarMultiply(dx*tf.getRatio(position)),tf.get2DYNorm().scalarMultiply(dy*tf.getRatio(position)));
+				rectangles.get(selectedNumber).modifyPosition(vect,selectedAxis);
+				break;
+			case 2:
+				position=cubes.get(selectedNumber).getPosition();
+				vect=Vector3D.add(tf.get2DXNorm().scalarMultiply(dx*tf.getRatio(position)),tf.get2DYNorm().scalarMultiply(dy*tf.getRatio(position)));
+				//vect.show();
+				cubes.get(selectedNumber).modifyAngle(vect,selectedAxis);
+				break;
+			default:
+				break;
+			}
+		this.updatePropertyPanel();
 	}
 	public void select(int x,int y)
 	{
@@ -276,28 +318,33 @@ public class ObjectManager {
 				if(selectedArr.get(i)==selectedType && selectedArr.get(i+1)>selectedNumber){
 					selectedType=selectedArr.get(i);
 					selectedNumber=selectedArr.get(i+1);
+					this.updatePropertyPanel();
 					return;
 				}
 				else if(selectedArr.get(i)>selectedType){
 					selectedType=selectedArr.get(i);
 					selectedNumber=selectedArr.get(i+1);
+					this.updatePropertyPanel();
 					return;
 				}
 			}
 			selectedType=selectedArr.get(0);
 			selectedNumber=selectedArr.get(1);
+			this.updatePropertyPanel();
 			return;
 		}
 		else if(selectedArr.size()==2){
 			selectedType=selectedArr.get(0);
 			selectedNumber=selectedArr.get(1);
+			this.updatePropertyPanel();
 			return;
 		}
 		selectedType=-1;
 		selectedNumber=-1;
 	}
 	public void setModifytype(int modifytype){this.modifytype=modifytype;}
-	public Object getSelectedObject(){
+	public void updatePropertyPanel()
+	{	
 		Object selectedObject= null;
 		switch (selectedType) {
 		case 0:
@@ -312,6 +359,6 @@ public class ObjectManager {
 		default:
 			break;
 		}
-		return selectedObject;
+		propertyPanel.update(selectedObject);
 	}
 }

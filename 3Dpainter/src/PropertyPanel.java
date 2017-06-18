@@ -1,22 +1,24 @@
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-public class PropertyPanel extends JPanel
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+public class PropertyPanel extends JPanel implements KeyListener
 {
 	private JLabel position,size;
 	private JLabel[] positionLabel,sizeLabel;
 	private JTextField[] positionTextField,sizeTextField;
-	private Canvas canvas;
-	private Timer time;
-	private int sleepTime;
-	public PropertyPanel(Canvas canvas)
+	private Object object;
+	public PropertyPanel()
 	{
-		this.canvas=canvas;
-		sleepTime=50;
 		position=new JLabel("position ");
 		size=new JLabel("size ");
 		positionLabel=new JLabel[3];
@@ -32,7 +34,23 @@ public class PropertyPanel extends JPanel
 		for(int i=0;i<3;i++)
 		{
 			positionTextField[i]=new JTextField();
+			positionTextField[i].addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                	for(int i=0;i<3;i++)
+                	{
+                		if(e.getSource()==positionTextField[i])
+                			modifyObject(i);
+                	}
+                }});
 			sizeTextField[i]=new JTextField();
+			sizeTextField[i].addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                	for(int i=0;i<3;i++)
+                	{
+                		if(e.getSource()==sizeTextField[i])
+                			modifyObject(i+3);
+                	}
+                }});
 		}
 		this.setLayout(new GridLayout(14,1));
 		this.add(position);
@@ -47,24 +65,11 @@ public class PropertyPanel extends JPanel
 			this.add(sizeLabel[i]);
 			this.add(sizeTextField[i]);
 		}
-		start();
+		addKeyListener(this);
 	}
-	public void start()
+	public void update(Object object)
 	{
-	  	   time = new Timer();
-		   
-	       time.schedule( new TimerTask() {
-						public void run()
-						{
-							update();
-						}
-						
-					},0,sleepTime); 
-	 
-	}
-	public void update()
-	{
-		Object object=canvas.getSelectedObject();
+		this.object=object;
 		if(object!=null)
 		{
 			positionTextField[0].setText(Double.toString(object.getPosition().getX()));
@@ -82,6 +87,39 @@ public class PropertyPanel extends JPanel
 				sizeTextField[2].setText(Double.toString(cube.getHeight()));
 			}
 		}
+	}
+	public void modifyObject(int x)
+	{
+		System.out.println(x);
+		if (object instanceof Rectangle) {
+			Rectangle rectangle = (Rectangle) object;
+			sizeTextField[0].setText(Double.toString(rectangle.getWidth()));
+			sizeTextField[1].setText(Double.toString(rectangle.getLength()));
+		}
+		if (object instanceof Cube) {
+			Cube cube = (Cube) object;
+			sizeTextField[0].setText(Double.toString(cube.getWidth()));
+			sizeTextField[1].setText(Double.toString(cube.getLength()));
+			sizeTextField[2].setText(Double.toString(cube.getHeight()));
+		}
+	}
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		System.out.println("= =");
+		if(e.getKeyCode()==KeyEvent.VK_ENTER)
+		{
+			
+		}
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO 自動產生的方法 Stub
 		
 	}
 }

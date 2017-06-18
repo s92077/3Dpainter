@@ -4,9 +4,9 @@ import javax.swing.JFrame;
 public class Main {
 	public static void main(String[] args)
 	{
-		Canvas canvas=new Canvas();
+		PropertyPanel propertyPanel=new PropertyPanel();
+		Canvas canvas=new Canvas(propertyPanel);
 		CommandPanel commandPanel=new CommandPanel(canvas); 
-		PropertyPanel propertyPanel=new PropertyPanel(canvas);
 		JFrame f=new JFrame();
 		f.setLayout(new BorderLayout());
 		f.add(canvas,BorderLayout.CENTER);

@@ -100,6 +100,7 @@ public class Cube extends Object
 		default:
 			break;
 		}
+		update();
 	}
 	public void update()
 	{ 
