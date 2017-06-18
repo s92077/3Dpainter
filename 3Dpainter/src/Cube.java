@@ -76,7 +76,7 @@ public class Cube extends Object
 		}
 		update();
 	}
-	public void modifyAngle(Vector3D vect,int selectedAxis,boolean LorR){
+	public void modifyAngle(Vector3D vect,int selectedAxis){
 		switch (selectedAxis) {
 		
 		case 0:
