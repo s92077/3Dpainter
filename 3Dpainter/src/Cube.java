@@ -26,12 +26,12 @@ public class Cube extends Object
 					Rectangle temp=Rectangle[j];
 					Rectangle[j]=Rectangle[j+1];
 					Rectangle[j+1]=temp;
-				}
-			}
+				}	
+			}	
 		}
 		if(tf.getVisionVector().dot(position.add(tf.getviewPoint().negate()))>0)
 		{
-			for(int i=3;i<6;i++)
+			for(int i=0;i<6;i++)
 				Rectangle[i].fill(g,tf);
 		}
 	}
@@ -153,4 +153,6 @@ public class Cube extends Object
 	public void setPositionX(double x){this.position=new Vector3D(x,position.getY(),position.getZ());update();}
 	public void setPositionY(double y){this.position=new Vector3D(position.getX(),y,position.getZ());update();}
 	public void setPositionZ(double z){this.position=new Vector3D(position.getX(),position.getY(),z);update();}
+	public Color getColor(){return color;}
+	public void setColor(Color color){this.color=color;update();}
 }

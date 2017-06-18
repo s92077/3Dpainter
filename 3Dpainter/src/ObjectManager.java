@@ -27,12 +27,41 @@ public class ObjectManager {
 	public void updateTransform(Transform tf){this.tf=tf;}
 	public void draw(Graphics g)
 	{
+		int n=lines.size()+rectangles.size()+cubes.size();
+		Object[] object=new Object[n];
 		for(int i=0;i<lines.size();i++)
-			lines.get(i).draw(g, tf);
-		for(int i=0;i<rectangles.size();i++)
-			rectangles.get(i).fill(g, tf);
-		for(int i=0;i<cubes.size();i++)
-			cubes.get(i).fill(g, tf);
+			object[i]=lines.get(i);
+		for(int i=lines.size();i<lines.size()+rectangles.size();i++)
+			object[i]=rectangles.get(i);
+		for(int i=lines.size()+rectangles.size();i<n;i++)
+			object[i]=cubes.get(i);
+		for(int i=0;i<n;i++){
+			for(int j=0;j<i;j++){
+				if(object[j].getPosition().add(tf.getviewPoint().negate()).getNorm()<object[j+1].getPosition().add(tf.getviewPoint().negate()).getNorm()){
+					Object temp=object[j];
+					object[j]=object[j+1];
+					object[j+1]=temp;
+				}	
+			}	
+		}
+		for(int i=0;i<n;i++)
+		{
+			if(object[i] instanceof Line)
+			{
+				Line line=(Line) object[i];
+				line.draw(g, tf);
+			}
+			if(object[i] instanceof Rectangle)
+			{
+				Rectangle rectangle=(Rectangle) object[i];
+				rectangle.fill(g, tf);
+			}
+			if(object[i] instanceof Cube)
+			{
+				Cube cube=(Cube) object[i];
+				cube.fill(g, tf);
+			}
+		}
 	}
 	public boolean insideModifier(int x,int y)
 	{	int n=3;

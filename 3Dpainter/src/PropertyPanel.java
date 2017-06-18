@@ -1,15 +1,25 @@
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-public class PropertyPanel extends JPanel
+import javax.swing.border.LineBorder;
+public class PropertyPanel extends JPanel implements MouseListener, MouseMotionListener
 {
 	private JLabel position,size;
 	private JLabel[] positionLabel,sizeLabel;
 	private JTextField[] positionTextField,sizeTextField;
 	private Object object;
+	private JLabel colorLabel;
+	private Color color=Color.WHITE;
 	public PropertyPanel()
 	{
 		position=new JLabel("position ");
@@ -45,7 +55,11 @@ public class PropertyPanel extends JPanel
                 	}
                 }});
 		}
-		this.setLayout(new GridLayout(14,1));
+		colorLabel=new JLabel();
+		colorLabel.setBorder(new LineBorder(Color.BLACK));
+        colorLabel.setPreferredSize(new Dimension(10, 10));
+        colorLabel.setOpaque(true);
+		this.setLayout(new GridLayout(16,1));
 		this.add(position);
 		for(int i=0;i<3;i++)
 		{
@@ -58,6 +72,8 @@ public class PropertyPanel extends JPanel
 			this.add(sizeLabel[i]);
 			this.add(sizeTextField[i]);
 		}
+		this.add(colorLabel);
+		colorLabel.addMouseListener(this);
 	}
 	public void update(Object object)
 	{
@@ -77,7 +93,9 @@ public class PropertyPanel extends JPanel
 				sizeTextField[0].setText(Double.toString(cube.getWidth()).substring(0, Math.min(Double.toString(cube.getWidth()).length(),6)));
 				sizeTextField[1].setText(Double.toString(cube.getLength()).substring(0, Math.min(Double.toString(cube.getLength()).length(),6)));
 				sizeTextField[2].setText(Double.toString(cube.getHeight()).substring(0, Math.min(Double.toString(cube.getHeight()).length(),6)));
+				colorLabel.setBackground(cube.getColor());
 			}
+			
 		}
 	}
 	public void modifyObject(int x)
@@ -130,5 +148,49 @@ public class PropertyPanel extends JPanel
 				break;
 			}
 		}
+	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		if(e.getSource()==colorLabel)
+		{
+			color=JColorChooser.showDialog(this,"Choose a color",color);
+			if (object instanceof Cube) {
+				Cube cube = (Cube) object;
+				cube.setColor(color);
+				colorLabel.setBackground(color);
+			}
+		}
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO 自動產生的方法 Stub
+		
 	}
 }

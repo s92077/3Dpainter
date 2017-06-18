@@ -45,6 +45,7 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 	       time.schedule( new TimerTask() {
 						public void run()
 						{
+							
 							Vector3D orthogonal;
 							//----------------------------------------
 							switch(viewCommand)
@@ -88,8 +89,8 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 						   //----------------------------------------
 							tf=new Transform(viewPoint,visionVector,getWidth(),getHeight());
 							objectManager.updateTransform(tf);
-							setFocusable(true); 
-						    repaint();
+							setFocusable(true);
+							repaint();
 						}
 						
 					},0,sleepTime); 
