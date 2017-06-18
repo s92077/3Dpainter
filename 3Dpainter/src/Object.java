@@ -16,4 +16,5 @@ public class Object
 	public Vector3D getDirX(){return dirX;}
 	public Vector3D getDirY(){return dirY;}
 	public Vector3D getDirZ(){return dirZ; }
+	
 }
