@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-
 import java.awt.Color;
 
 public class Polygon extends Object 
@@ -43,7 +42,10 @@ public class Polygon extends Object
 		}
 		xPoints[points.length]=xPoints[0];
 		yPoints[points.length]=yPoints[0];
-		g.setColor(color);
+		Vector3D light=tf.get2DXNorm().add(tf.get2DYNorm());
+		double lightness=light.dot(getDirZ())/(4*light.getNorm()*getDirZ().getNorm());
+		Color lightColor=new Color((int)(color.getRed()*(0.75-lightness)),(int)(color.getGreen()*(0.75-lightness)),(int)(color.getBlue()*(0.75-lightness)));
+		g.setColor(lightColor);
 		g.fillPolygon(xPoints, yPoints,points.length+1);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(xPoints, yPoints,points.length+1);
