@@ -55,6 +55,7 @@ public class Cube extends Object
 		default:
 			break;
 		}
+		
 		update();
 	}
 	public void modifyPosition(Vector3D vect,int selectedAxis)
@@ -74,6 +75,31 @@ public class Cube extends Object
 			break;
 		}
 		update();
+	}
+	public void modifyAngle(Vector3D vect,int selectedAxis,boolean LorR){
+		switch (selectedAxis) {
+		
+		case 0:
+			double tY=-vect.dot(this.getDirY());
+			dirY=Vector3D.rotVect(this.getDirX(),this.getDirY(),tY);
+			dirZ=Vector3D.rotVect(this.getDirX(),this.getDirZ(),tY);
+			//width+=vect.dot(this.getDirX());
+			break;
+		case 1:
+			double tZ=-vect.dot(this.getDirZ());
+			dirZ=Vector3D.rotVect(this.getDirY(),this.getDirZ(),tZ);
+			dirX=Vector3D.rotVect(this.getDirY(),this.getDirX(),tZ);
+			//length+=vect.dot(this.getDirY());
+			break;
+		case 2:
+			double tX=-vect.dot(this.getDirX());
+			dirX=Vector3D.rotVect(this.getDirZ(),this.getDirX(),tX);
+			dirY=Vector3D.rotVect(this.getDirZ(),this.getDirY(),tX);
+			//height+=vect.dot(this.getDirZ());
+			break;
+		default:
+			break;
+		}
 	}
 	public void update()
 	{ 
