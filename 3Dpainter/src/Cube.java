@@ -8,6 +8,7 @@ public class Cube extends Object
 	private double height;
 	private Color color;
 	private Rectangle[] Rectangle=new Rectangle[6];
+	private Vector3D[] rectPosition=new Vector3D[6];
 	public Cube(double length,double width,double height,Vector3D position,Vector3D dirX,Vector3D dirY,Color color)
 	{
 		super(position,dirX,dirY);
@@ -19,15 +20,19 @@ public class Cube extends Object
 	} 
 	public void fill(Graphics g,Transform tf)
 	{
+		for(int i=0;i<6;i++){
+			for(int j=0;j<i;j++){
+				if(Rectangle[j].getPosition().add(tf.getviewPoint().negate()).getNorm()<Rectangle[j+1].getPosition().add(tf.getviewPoint().negate()).getNorm()){
+					Rectangle temp=Rectangle[j];
+					Rectangle[j]=Rectangle[j+1];
+					Rectangle[j+1]=temp;
+				}
+			}
+		}
 		if(tf.getVisionVector().dot(position.add(tf.getviewPoint().negate()))>0)
 		{
-			for(int i=0;i<3;i++)
-			{
-				if(Rectangle[2*i].getPosition().add(tf.getviewPoint().negate()).getNorm()<Rectangle[2*i+1].getPosition().add(tf.getviewPoint().negate()).getNorm())
-					Rectangle[2*i].fill(g,tf);
-				else
-					Rectangle[2*i+1].fill(g,tf);
-			}
+			for(int i=3;i<6;i++)
+				Rectangle[i].fill(g,tf);
 		}
 	}
 	public void draw(Graphics g,Transform tf)
@@ -93,7 +98,6 @@ public class Cube extends Object
 			
 			dirY=Vector3D.rotVect(this.getDirX(),this.getDirY(),delta);
 			dirZ=Vector3D.rotVect(this.getDirX(),this.getDirZ(),delta);
-			//width+=vect.dot(this.getDirX());
 			break;
 		case 1:
 			if(Math.signum(tX)>=0){
@@ -102,10 +106,8 @@ public class Cube extends Object
 			else{
 				delta=Math.sqrt(tX*tX+tZ*tZ);
 			}
-			System.out.print("\\\\\\"+delta+"\\\\\\\n");
 			dirZ=Vector3D.rotVect(this.getDirY(),this.getDirZ(),delta);
 			dirX=Vector3D.rotVect(this.getDirY(),this.getDirX(),delta);
-			//length+=vect.dot(this.getDirY());
 			break;
 		case 2:
 			if(Math.signum(tY)>=0){
@@ -116,7 +118,6 @@ public class Cube extends Object
 			}
 			dirX=Vector3D.rotVect(this.getDirZ(),this.getDirX(),delta);
 			dirY=Vector3D.rotVect(this.getDirZ(),this.getDirY(),delta);
-			//height+=vect.dot(this.getDirZ());
 			break;
 		default:
 			break;
@@ -131,6 +132,8 @@ public class Cube extends Object
 		Rectangle[3]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirY,dirZ.negate(),color);
 /*Y*/	Rectangle[4]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/2)),dirX,dirZ,color);
 		Rectangle[5]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ.negate(),color);
+		for(int i=0;i<6;i++)
+			rectPosition[i]=Rectangle[i].getPosition();
 	}
 	public boolean inside(int x,int y,Transform tf)
 	{

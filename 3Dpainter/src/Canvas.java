@@ -100,6 +100,7 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		super.paint(g);
 		Graphics2D graphics2D = (Graphics2D) g;
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		setDoubleBuffered(true);
 		objectManager.draw(g);
 		objectManager.drawModifier(g);
 	}
