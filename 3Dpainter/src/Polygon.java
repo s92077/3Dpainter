@@ -44,6 +44,8 @@ public class Polygon extends Object
 		xPoints[points.length]=xPoints[0];
 		yPoints[points.length]=yPoints[0];
 		g.setColor(color);
+		//int cr=color.getRed(),cg=color.getGreen(),cb=color.getBlue();
+		//Color refColor=color.
 		g.fillPolygon(xPoints, yPoints,points.length+1);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(xPoints, yPoints,points.length+1);
