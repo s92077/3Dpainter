@@ -1,17 +1,10 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-public class PropertyPanel extends JPanel implements KeyListener
+public class PropertyPanel extends JPanel
 {
 	private JLabel position,size;
 	private JLabel[] positionLabel,sizeLabel;
@@ -65,7 +58,6 @@ public class PropertyPanel extends JPanel implements KeyListener
 			this.add(sizeLabel[i]);
 			this.add(sizeTextField[i]);
 		}
-		addKeyListener(this);
 	}
 	public void update(Object object)
 	{
@@ -138,24 +130,5 @@ public class PropertyPanel extends JPanel implements KeyListener
 				break;
 			}
 		}
-	}
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		System.out.println("= =");
-		if(e.getKeyCode()==KeyEvent.VK_ENTER)
-		{
-			
-		}
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO 自動產生的方法 Stub
-		
-	}
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO 自動產生的方法 Stub
-		
 	}
 }
