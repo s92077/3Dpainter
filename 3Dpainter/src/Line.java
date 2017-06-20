@@ -4,10 +4,11 @@ import java.awt.Color;
 public class Line extends Object
 {
 	private Vector3D startPoint,endPoint;
-	private Color color=Color.BLACK;
-	public Line(Vector3D startPoint,Vector3D endPoint)
+	private Color color;
+	public Line(Vector3D startPoint,Vector3D endPoint,Color color)
 	{
 		super(startPoint.add(endPoint).scalarMultiply(0.5),endPoint.add(startPoint.negate()),new Vector3D(-1*endPoint.add(startPoint.negate()).getY(),endPoint.add(startPoint.negate()).getX(),0));
+		this.color=color;
 		this.startPoint=startPoint;
 		this.endPoint=endPoint;
 	}
@@ -31,6 +32,7 @@ public class Line extends Object
 	}
 	public Vector3D getStartPoint(){return startPoint;}
 	public Vector3D getEndPoint(){return endPoint;}
+	public Double getLength(){return endPoint.add(startPoint.negate()).getNorm();}
 	public void modifyLength(Vector3D vect,int selectedAxis)
 	{
 		//surface:(dirX.getY())x+(-dirX.getX())y=0
@@ -67,6 +69,8 @@ public class Line extends Object
 			break;
 		}
 	}
+	public Color getColor(){return color;}
+	public void setColor(Color color){this.color=color;}
 	public boolean inside(int x,int y,Transform tf)
 	{
 		double x1,y1,x2,y2;

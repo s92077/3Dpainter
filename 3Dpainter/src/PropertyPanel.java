@@ -83,10 +83,19 @@ public class PropertyPanel extends JPanel implements MouseListener, MouseMotionL
 			positionTextField[0].setText(Double.toString(object.getPosition().getX()).substring(0, Math.min(Double.toString(object.getPosition().getX()).length(),6)));
 			positionTextField[1].setText(Double.toString(object.getPosition().getY()).substring(0, Math.min(Double.toString(object.getPosition().getY()).length(),6)));
 			positionTextField[2].setText(Double.toString(object.getPosition().getZ()).substring(0, Math.min(Double.toString(object.getPosition().getZ()).length(),6)));
+			if (object instanceof Line) {
+				Line line = (Line) object;
+				sizeTextField[1].setText(Double.toString(line.getLength()).substring(0, Math.min(Double.toString(line.getLength()).length(),6)));
+				sizeTextField[0].setText("");
+				sizeTextField[2].setText("");
+				colorLabel.setBackground(line.getColor());
+			}
 			if (object instanceof Rectangle) {
 				Rectangle rectangle = (Rectangle) object;
 				sizeTextField[0].setText(Double.toString(rectangle.getWidth()).substring(0, Math.min(Double.toString(rectangle.getWidth()).length(),6)));
 				sizeTextField[1].setText(Double.toString(rectangle.getLength()).substring(0, Math.min(Double.toString(rectangle.getLength()).length(),6)));
+				sizeTextField[2].setText("");
+				colorLabel.setBackground(rectangle.getColor());
 			}
 			if (object instanceof Cube) {
 				Cube cube = (Cube) object;
@@ -100,7 +109,6 @@ public class PropertyPanel extends JPanel implements MouseListener, MouseMotionL
 	}
 	public void modifyObject(int x)
 	{
-		System.out.println(x);
 		if (object instanceof Rectangle) {
 			Rectangle rectangle = (Rectangle) object;
 			switch (x) {
@@ -181,6 +189,16 @@ public class PropertyPanel extends JPanel implements MouseListener, MouseMotionL
 		if(e.getSource()==colorLabel)
 		{
 			color=JColorChooser.showDialog(this,"Choose a color",color);
+			if (object instanceof Line) {
+				Line line = (Line) object;
+				line.setColor(color);
+				colorLabel.setBackground(color);
+			}
+			if (object instanceof Rectangle) {
+				Rectangle rectangle = (Rectangle) object;
+				rectangle.setColor(color);
+				colorLabel.setBackground(color);
+			}
 			if (object instanceof Cube) {
 				Cube cube = (Cube) object;
 				cube.setColor(color);

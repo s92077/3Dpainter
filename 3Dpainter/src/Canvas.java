@@ -90,7 +90,8 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 							tf=new Transform(viewPoint,visionVector,getWidth(),getHeight());
 							objectManager.updateTransform(tf);
 							setFocusable(true);
-							repaint();
+							if(!objectManager.getUpdateFlag())
+								repaint();
 						}
 						
 					},0,sleepTime); 
@@ -106,17 +107,18 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		objectManager.drawModifier(g);
 	}
 	public void setModifytype(int modifytype){objectManager.setModifytype(modifytype);}
+	public void setFill(boolean fill){objectManager.setFill(fill);;}
 	public void addObject(int objectType)
 	{
 		switch (objectType) {
 		case 0:
-			objectManager.addLine(new Line(viewPoint.add(visionVector.scalarMultiply(0.1)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),100).normalize()), viewPoint.add(visionVector.scalarMultiply(0.1)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),0).normalize().negate())));
+			objectManager.addLine(new Line(viewPoint.add(visionVector.scalarMultiply(0.01)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),100).normalize()), viewPoint.add(visionVector.scalarMultiply(0.01)).add(new Vector3D(visionVector.getY(),-visionVector.getX(),0).normalize().negate()), Color.BLACK));
 			break;
 		case 1:
-			objectManager.addRectangle(new Rectangle(10,10, viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(0,0,1),new Vector3D(-1,1,0),Color.BLUE));
+			objectManager.addRectangle(new Rectangle(20,20, viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(0,0,1),new Vector3D(-1,1,0),Color.BLUE));
 			break;
 		case 2:
-			objectManager.addCube(new Cube(30,30,30,viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(-1,1,0),new Vector3D(-1,-1,0),Color.BLUE));
+			objectManager.addCube(new Cube(10,10,10,viewPoint.add(visionVector.scalarMultiply(0.1)),new Vector3D(-1,1,0),new Vector3D(-1,-1,0),Color.BLUE));
 			break;
 		default:
 			break;

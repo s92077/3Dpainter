@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 public class ObjectManager {
@@ -13,6 +14,8 @@ public class ObjectManager {
 	private Line modifierLines[]=new Line[3];
 	private int selectedAxis=-1;//0:x 1:y 2:z
 	private PropertyPanel propertyPanel;
+	private boolean fill=false;
+	private boolean updateFlag=false;
 	public ObjectManager(Transform tf,PropertyPanel propertyPanel)
 	{
 		this.propertyPanel=propertyPanel;
@@ -32,9 +35,9 @@ public class ObjectManager {
 		for(int i=0;i<lines.size();i++)
 			object[i]=lines.get(i);
 		for(int i=lines.size();i<lines.size()+rectangles.size();i++)
-			object[i]=rectangles.get(i);
+			object[i]=rectangles.get(i-lines.size());
 		for(int i=lines.size()+rectangles.size();i<n;i++)
-			object[i]=cubes.get(i);
+			object[i]=cubes.get(i-lines.size()-rectangles.size());
 		for(int i=0;i<n;i++){
 			for(int j=0;j<i;j++){
 				if(object[j].getPosition().add(tf.getviewPoint().negate()).getNorm()<object[j+1].getPosition().add(tf.getviewPoint().negate()).getNorm()){
@@ -54,17 +57,24 @@ public class ObjectManager {
 			if(object[i] instanceof Rectangle)
 			{
 				Rectangle rectangle=(Rectangle) object[i];
-				rectangle.fill(g, tf);
+				if(fill)
+					rectangle.fill(g, tf);
+				else
+					rectangle.draw(g, tf);
 			}
 			if(object[i] instanceof Cube)
 			{
 				Cube cube=(Cube) object[i];
-				cube.fill(g, tf);
+				if(fill)
+					cube.fill(g, tf);
+				else
+					cube.draw(g, tf);
 			}
 		}
 	}
 	public boolean insideModifier(int x,int y)
-	{	int n=3;
+	{	
+		int n=3;
 		switch (selectedType) {
 		case 0:
 			if(modifytype==0)
@@ -153,17 +163,17 @@ public class ObjectManager {
 					
 					break;
 				case 1:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					for(int i=0;i<3;i++)
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					for(int i=0;i<3;i++)
 						modifierLines[i].draw(g,tf);
@@ -174,26 +184,26 @@ public class ObjectManager {
 			if(selectedType==1)
 				switch (modifytype) {
 				case 0:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
 					
 					((Graphics2D)g).setStroke(new BasicStroke(3));
 					for(int i=0;i<2;i++)
 						modifierLines[i].draw(g,tf);
 					break;
 				case 1:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					((Graphics2D)g).setStroke(new BasicStroke(3));
 					for(int i=0;i<3;i++)
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					((Graphics2D)g).setStroke(new BasicStroke(3));
 					for(int i=0;i<3;i++)
@@ -205,27 +215,27 @@ public class ObjectManager {
 			if(selectedType==2)
 				switch (modifytype) {
 				case 0:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					((Graphics2D)g).setStroke(new BasicStroke(3));
 					for(int i=0;i<3;i++)
 						modifierLines[i].draw(g,tf);
 					break;
 				case 1:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					((Graphics2D)g).setStroke(new BasicStroke(3));
 					for(int i=0;i<3;i++)
 						modifierLines[i].draw(g,tf);
 					break;
 				case 2:
-					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
-					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))));
+					modifierLines[0]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirX().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.BLUE);
+					modifierLines[1]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirY().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.GREEN);
+					modifierLines[2]=new Line(object.getPosition(),Vector3D.add(object.getPosition(),object.getDirZ().normalize().scalarMultiply(50*tf.getRatio(object.getPosition()))), Color.RED);
 					
 					((Graphics2D)g).setStroke(new BasicStroke(3));
 					for(int i=0;i<3;i++)
@@ -238,6 +248,7 @@ public class ObjectManager {
 	}
 	public void modifySelectedItemSize(int dx,int dy)
 	{
+		updateFlag=true;
 		Vector3D vect,position;
 		if(modifytype==0)
 			switch (selectedType) {
@@ -290,7 +301,7 @@ public class ObjectManager {
 			case 1:
 				position=rectangles.get(selectedNumber).getPosition();
 				vect=Vector3D.add(tf.get2DXNorm().scalarMultiply(dx*tf.getRatio(position)),tf.get2DYNorm().scalarMultiply(dy*tf.getRatio(position)));
-				rectangles.get(selectedNumber).modifyPosition(vect,selectedAxis);
+				rectangles.get(selectedNumber).modifyAngle(vect,selectedAxis);
 				break;
 			case 2:
 				position=cubes.get(selectedNumber).getPosition();
@@ -302,6 +313,7 @@ public class ObjectManager {
 				break;
 			}
 		this.updatePropertyPanel();
+		updateFlag=false;
 	}
 	public void select(int x,int y)
 	{
@@ -314,7 +326,6 @@ public class ObjectManager {
 				{
 					selectedArr.add(0);
 					selectedArr.add(i);
-					System.out.printf("%d %d\n",0,i);
 				}
 			}
 		}
@@ -326,7 +337,6 @@ public class ObjectManager {
 				{
 					selectedArr.add(1);
 					selectedArr.add(i);
-					System.out.printf("%d %d\n",1,i);
 				}
 			}
 		}
@@ -338,7 +348,6 @@ public class ObjectManager {
 				{
 					selectedArr.add(2);
 					selectedArr.add(i);
-					System.out.printf("%d %d\n",2,i);
 				}
 			}
 		}
@@ -372,6 +381,7 @@ public class ObjectManager {
 		selectedNumber=-1;
 	}
 	public void setModifytype(int modifytype){this.modifytype=modifytype;}
+	public void setFill(boolean fill){this.fill=fill;}
 	public void updatePropertyPanel()
 	{	
 		Object selectedObject= null;
@@ -390,4 +400,5 @@ public class ObjectManager {
 		}
 		propertyPanel.update(selectedObject);
 	}
+	public boolean getUpdateFlag(){return updateFlag;}
 }

@@ -11,8 +11,9 @@ public class Polygon extends Object
 		super(position,dirX,dirY);
 		this.color=color;
 	}
-	public void update(Vector3D points[])
+	public void update(Vector3D points[],Color color)
 	{
+		this.color=color;
 		this.points=points;
 	}
 	public void draw(Graphics g,Transform tf)

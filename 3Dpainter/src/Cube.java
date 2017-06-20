@@ -9,6 +9,7 @@ public class Cube extends Object
 	private Color color;
 	private Rectangle[] Rectangle=new Rectangle[6];
 	private Vector3D[] rectPosition=new Vector3D[6];
+	private int[] index={0,1,2,3,4,5};;
 	public Cube(double length,double width,double height,Vector3D position,Vector3D dirX,Vector3D dirY,Color color)
 	{
 		super(position,dirX,dirY);
@@ -20,19 +21,51 @@ public class Cube extends Object
 	} 
 	public void fill(Graphics g,Transform tf)
 	{
-		for(int i=0;i<6;i++){
+		for(int i=0;i<6;i++)
+			index[i]=i;
+		/*for(int i=0;i<6;i++){
 			for(int j=0;j<i;j++){
 				if(Rectangle[j].getPosition().add(tf.getviewPoint().negate()).getNorm()<Rectangle[j+1].getPosition().add(tf.getviewPoint().negate()).getNorm()){
 					Rectangle temp=Rectangle[j];
 					Rectangle[j]=Rectangle[j+1];
 					Rectangle[j+1]=temp;
+					int tmp=index[j];
+					index[j]=index[j+1];
+					index[j+1]=tmp;
+				}	
+			}	
+		}*/
+		rectPosition[0]=position.add(dirZ.normalize().scalarMultiply(height/2));
+		rectPosition[1]=position.add(dirZ.normalize().scalarMultiply(height/(-2)));
+		rectPosition[2]=position.add(dirX.normalize().scalarMultiply(width/2));
+		rectPosition[3]=position.add(dirX.normalize().scalarMultiply(width/(-2)));
+		rectPosition[4]=position.add(dirY.normalize().scalarMultiply(length/2));
+		rectPosition[5]=position.add(dirY.normalize().scalarMultiply(length/(-2)));
+		if(rectPosition[0].add(tf.getviewPoint().negate()).getNorm()<rectPosition[1].add(tf.getviewPoint().negate()).getNorm())
+			index[0]=0;
+		else
+			index[0]=1;
+		if(rectPosition[2].add(tf.getviewPoint().negate()).getNorm()<rectPosition[3].add(tf.getviewPoint().negate()).getNorm())
+			index[1]=2;
+		else
+			index[1]=3;
+		if(rectPosition[4].add(tf.getviewPoint().negate()).getNorm()<rectPosition[5].add(tf.getviewPoint().negate()).getNorm())
+			index[2]=4;
+		else
+			index[2]=5;
+		for(int i=0;i<3;i++){
+			for(int j=0;j<i;j++){
+				if(rectPosition[index[j]].add(tf.getviewPoint().negate()).getNorm()<rectPosition[index[j+1]].add(tf.getviewPoint().negate()).getNorm()){
+					int tmp=index[j];
+					index[j]=index[j+1];
+					index[j+1]=tmp;
 				}	
 			}	
 		}
 		if(tf.getVisionVector().dot(position.add(tf.getviewPoint().negate()))>0)
 		{
-			for(int i=0;i<6;i++)
-				Rectangle[i].fill(g,tf);
+			for(int i=0;i<3;i++)
+				Rectangle[index[i]].fill(g,tf);
 		}
 	}
 	public void draw(Graphics g,Transform tf)
@@ -127,13 +160,11 @@ public class Cube extends Object
 	public void update()
 	{ 
 /*Z*/	Rectangle[0]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/2)),dirX,dirY,color);
-		Rectangle[1]=new Rectangle(length,width,position.add(dirZ.normalize().scalarMultiply(height/(-2))),dirX,dirY.negate(),color);
+		Rectangle[1]=new Rectangle(width,length,position.add(dirZ.normalize().scalarMultiply(height/(-2))),dirY,dirX,color);
 /*X*/	Rectangle[2]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/2)),dirY,dirZ,color);
-		Rectangle[3]=new Rectangle(height,length,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirY,dirZ.negate(),color);
-/*Y*/	Rectangle[4]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/2)),dirX,dirZ,color);
-		Rectangle[5]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ.negate(),color);
-		for(int i=0;i<6;i++)
-			rectPosition[i]=Rectangle[i].getPosition();
+		Rectangle[3]=new Rectangle(length,height,position.add(dirX.normalize().scalarMultiply(width/(-2))),dirZ,dirY,color);
+/*Y*/	Rectangle[4]=new Rectangle(width,height,position.add(dirY.normalize().scalarMultiply(length/2)),dirZ,dirX,color);
+		Rectangle[5]=new Rectangle(height,width,position.add(dirY.normalize().scalarMultiply(length/(-2))),dirX,dirZ,color);
 	}
 	public boolean inside(int x,int y,Transform tf)
 	{
