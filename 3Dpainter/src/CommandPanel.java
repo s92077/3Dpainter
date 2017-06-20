@@ -17,9 +17,10 @@ public class CommandPanel extends JPanel implements ActionListener{
 		objectButtons[0]=new JButton("line");
 		objectButtons[1]=new JButton("rectangle");
 		objectButtons[2]=new JButton("cube");
-		commandButtons=new JButton[2];
+		commandButtons=new JButton[3];
 		commandButtons[0]=new JButton("Size");
 		commandButtons[1]=new JButton("Draw");
+		commandButtons[2]=new JButton("Remove");
 		setLayout(new GridLayout(1,objectButtons.length+commandButtons.length,2,2)); 
 		for(int i=0;i<objectButtons.length;i++)
 			objectButtons[i].addActionListener(this);
@@ -66,6 +67,8 @@ public class CommandPanel extends JPanel implements ActionListener{
 				commandButtons[1].setText("Fill");
 			}
 		}
+		if(arg0.getSource()==commandButtons[2])
+			canvas.pop();
 		canvas.requestFocusInWindow();
 	}
 

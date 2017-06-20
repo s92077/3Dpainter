@@ -401,4 +401,28 @@ public class ObjectManager {
 		propertyPanel.update(selectedObject);
 	}
 	public boolean getUpdateFlag(){return updateFlag;}
+	public void pop()
+	{
+		if(selectedNumber!=-1)
+		switch (selectedType) {
+		case 0:
+			lines.remove(selectedNumber);
+			selectedType=-1;
+			selectedNumber=-1;
+			break;
+		case 1:
+			rectangles.remove(selectedNumber);
+			selectedType=-1;
+			selectedNumber=-1;
+			break;
+		case 2:
+			cubes.remove(selectedNumber);
+			selectedType=-1;
+			selectedNumber=-1;
+			break;
+		default:
+			break;
+		
+		}
+	}
 }

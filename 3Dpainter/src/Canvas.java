@@ -267,4 +267,5 @@ public class Canvas extends JPanel implements KeyListener,MouseListener, MouseMo
 		if(event.getButton()==MouseEvent.BUTTON1)
 			modifying=false;
 	}
+	public void pop(){objectManager.pop();}
 }
